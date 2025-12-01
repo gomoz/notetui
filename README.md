@@ -1,123 +1,123 @@
 # NoteTUI
 
-En tastatur-drevet terminal-applikasjon (TUI) for daglige markdown-notater.
+A keyboard-driven terminal application (TUI) for daily markdown notes.
 
-## Hva er NoteTUI?
+## What is NoteTUI?
 
-NoteTUI er en terminal-basert notatapplikasjon som lar deg skrive daglige notater i markdown-format. Hver dag får sin egen fil, og du kan enkelt navigere mellom dager med tastatursnarveier.
+NoteTUI is a terminal-based note-taking application that lets you write daily notes in markdown format. Each day gets its own file, and you can easily navigate between days using keyboard shortcuts.
 
-### Funksjoner
+### Features
 
-- **Daglige notater** - Automatisk filnavn basert på dato (`DD-Mmm-YYYY.md`)
-- **Markdown-editor** - Syntaksutheving og linjenummerering
-- **Kalendervisning** - Visuell navigering mellom datoer
-- **Todo-liste** - Samler alle `##`-overskrifter fra notatene dine
-- **Tastatur-drevet** - Rask navigering uten mus
-- **Norsk språk** - Datoer og ukedager på norsk
-- **Auto-lagring** - Notater lagres automatisk ved navigering
+- **Daily notes** - Automatic filename based on date (`DD-Mmm-YYYY.md`)
+- **Markdown editor** - Syntax highlighting and line numbering
+- **Calendar view** - Visual navigation between dates
+- **Todo list** - Collects all `##` headings from your notes
+- **Keyboard-driven** - Fast navigation without mouse
+- **Norwegian language** - Dates and weekdays in Norwegian
+- **Auto-save** - Notes are saved automatically when navigating
 
-## Installasjon
+## Installation
 
-### Krav
+### Requirements
 
-- Python 3.10 eller nyere
-- [uv](https://github.com/astral-sh/uv) (anbefalt) eller pip
+- Python 3.10 or newer
+- [uv](https://github.com/astral-sh/uv) (recommended) or pip
 
-### Med uv (anbefalt)
+### With uv (recommended)
 
 ```bash
-# Installer direkte fra GitHub
-uv tool install git+https://github.com/DITT-BRUKERNAVN/notetui.git
+# Install directly from GitHub
+uv tool install git+https://github.com/gomoz/notetui.git
 
-# Eller klon og installer lokalt
-git clone https://github.com/DITT-BRUKERNAVN/notetui.git
+# Or clone and install locally
+git clone https://github.com/gomoz/notetui.git
 cd notetui
 uv tool install -e .
 ```
 
-### Med pip
+### With pip
 
 ```bash
-git clone https://github.com/DITT-BRUKERNAVN/notetui.git
+git clone https://github.com/gomoz/notetui.git
 cd notetui
 pip install .
 ```
 
-## Bruk
+## Usage
 
-Start applikasjonen:
+Start the application:
 
 ```bash
 notetui
 ```
 
-Notatene lagres i `~/notes/`.
+Notes are stored in `~/notes/`.
 
-## Tastatursnarveier
+## Keyboard Shortcuts
 
-### Navigering
+### Navigation
 
-| Tast | Handling |
-|------|----------|
-| `Ctrl+N` | Neste dag |
-| `Ctrl+P` | Forrige dag |
-| `Ctrl+F` | Neste uke |
-| `Ctrl+B` | Forrige uke |
-| `Ctrl+T` | Gå til i dag |
+| Key | Action |
+|-----|--------|
+| `Ctrl+N` | Next day |
+| `Ctrl+P` | Previous day |
+| `Ctrl+F` | Next week |
+| `Ctrl+B` | Previous week |
+| `Ctrl+T` | Go to today |
 
-### Visninger
+### Views
 
-| Tast | Handling |
-|------|----------|
-| `Ctrl+C` | Vis/skjul kalender |
-| `Tab` | Fokuser todo-liste |
-| `Escape` | Tilbake til editor |
+| Key | Action |
+|-----|--------|
+| `Ctrl+C` | Show/hide calendar |
+| `Tab` | Focus todo list |
+| `Escape` | Back to editor |
 
-### Redigering
+### Editing
 
-| Tast | Handling |
-|------|----------|
-| `Ctrl+S` | Lagre notat |
-| `Ctrl+D` | Marker todo som ferdig (i todo-listen) |
-| `Ctrl+Enter` | Marker todo på linje som ferdig (i editoren) |
+| Key | Action |
+|-----|--------|
+| `Ctrl+S` | Save note |
+| `Ctrl+D` | Mark todo as done (in todo list) |
+| `Ctrl+Enter` | Mark todo on line as done (in editor) |
 
-### Annet
+### Other
 
-| Tast | Handling |
-|------|----------|
-| `Ctrl+H` | Vis hjelp |
-| `Ctrl+Q` | Avslutt |
+| Key | Action |
+|-----|--------|
+| `Ctrl+H` | Show help |
+| `Ctrl+Q` | Quit |
 
-### I kalendervisning
+### In calendar view
 
-| Tast | Handling |
-|------|----------|
-| Piltaster | Naviger mellom dager |
-| `Enter` | Velg dato |
-| `[` / `]` | Forrige/neste måned |
+| Key | Action |
+|-----|--------|
+| Arrow keys | Navigate between days |
+| `Enter` | Select date |
+| `[` / `]` | Previous/next month |
 
-## Todo-funksjonen
+## Todo Feature
 
-Alle `##`-overskrifter i notatene dine vises som todos i sidepanelet:
+All `##` headings in your notes are shown as todos in the side panel:
 
 ```markdown
-# mandag, 01 desember 2025
+# monday, 01 december 2025
 
-## Handle mat
-Kjøpe melk og brød
+## Buy groceries
+Get milk and bread
 
-## Ringe legen
+## Call the doctor
 ```
 
-- Trykk `Tab` for å fokusere todo-listen
-- Trykk `Enter` for å hoppe til datoen for en todo
-- Trykk `Ctrl+D` for å markere en todo som ferdig (legger til ~~strikethrough~~)
+- Press `Tab` to focus the todo list
+- Press `Enter` to jump to the date for a todo
+- Press `Ctrl+D` to mark a todo as done (adds ~~strikethrough~~)
 
-## Teknologi
+## Technology
 
-- [Textual](https://textual.textualize.io/) - Moderne Python TUI-rammeverk
+- [Textual](https://textual.textualize.io/) - Modern Python TUI framework
 - Python 3.10+
 
-## Lisens
+## License
 
 MIT License
