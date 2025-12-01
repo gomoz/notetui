@@ -43,3 +43,6 @@ notes_test/
 
 # uv
 uv.lock
+
+# Handover
+HANDOVER.md
