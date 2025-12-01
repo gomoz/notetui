@@ -1,0 +1,15 @@
+[project]
+name = "notetui"
+version = "0.1.0"
+description = "A keyboard-driven TUI for daily markdown notes"
+requires-python = ">=3.10"
+dependencies = [
+    "textual>=0.86.0",
+]
+
+[project.scripts]
+notetui = "notetui.app:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
