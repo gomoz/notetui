@@ -6,7 +6,7 @@ from pathlib import Path
 from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.containers import Container, Horizontal, Vertical
-from textual.widgets import Footer, Header, TextArea, Label, Static
+from textual.widgets import Footer, Header, TextArea, Label, Static, Button
 from textual.reactive import reactive
 
 from notetui.notes import NoteManager
@@ -128,6 +128,49 @@ class NoteTUI(App):
         content-align: right middle;
         color: #7b2cbf;
     }
+
+    #button-bar {
+        width: 100%;
+        height: auto;
+        padding: 1;
+        background: #0d1117;
+        align: center middle;
+    }
+
+    .action-button {
+        margin: 0 1;
+        min-width: 16;
+        background: #1a1f2e;
+        color: #00ffff;
+        border: tall #7b2cbf;
+    }
+
+    .action-button:hover {
+        background: #7b2cbf;
+        color: #ffffff;
+    }
+
+    .action-button:focus {
+        border: tall #00ffff;
+    }
+
+    #save-button {
+        background: #1a472a;
+        color: #00ff88;
+    }
+
+    #save-button:hover {
+        background: #2d6a4f;
+    }
+
+    #refresh-button {
+        background: #1a3a5c;
+        color: #00d4ff;
+    }
+
+    #refresh-button:hover {
+        background: #2d5a8a;
+    }
     """
 
     BINDINGS = [
@@ -178,6 +221,9 @@ class NoteTUI(App):
                         theme="dracula",
                         show_line_numbers=True,
                     )
+                    with Horizontal(id="button-bar"):
+                        yield Button("💾 Save", id="save-button", classes="action-button")
+                        yield Button("🔄 Refresh", id="refresh-button", classes="action-button")
 
                 with Container(id="todo-container"):
                     yield TodoList(self.note_manager.notes_dir)
@@ -278,6 +324,22 @@ class NoteTUI(App):
         """Save the current note."""
         self._save_current_note()
         self.notify("Note saved!", severity="information")
+
+    def action_refresh(self) -> None:
+        """Refresh the current note from disk."""
+        if self.editor:
+            self.editor.text = self.note_manager.get_note_content(self.current_date)
+            self._update_info_bar()
+            if self.todo_list:
+                self.todo_list.scan_notes()
+            self.notify("Note refreshed!", severity="information")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        """Handle button press events."""
+        if event.button.id == "save-button":
+            self.action_save()
+        elif event.button.id == "refresh-button":
+            self.action_refresh()
 
     def action_next_day(self) -> None:
         """Navigate to the next day."""

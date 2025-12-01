@@ -53,6 +53,25 @@ notetui
 
 Notes are stored in `~/notes/`.
 
+### Run as Web App
+
+You can also run NoteTUI in your browser using textual-serve:
+
+```bash
+# Install textual-serve
+uv add textual-serve
+
+# Run locally (localhost only)
+uv run python -c "from textual_serve.server import Server; Server('uv run notetui').serve()"
+
+# Run with remote access (accessible from other devices)
+uv run python -c "from textual_serve.server import Server; Server('uv run notetui', host='0.0.0.0').serve()"
+```
+
+Then open http://localhost:8000 in your browser.
+
+**Note**: In web mode, use the Save and Refresh buttons at the bottom of the editor (keyboard shortcuts may be intercepted by the browser).
+
 ## Keyboard Shortcuts
 
 ### Navigation
