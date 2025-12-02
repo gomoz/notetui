@@ -1,9 +1,21 @@
 """Note manager for handling daily markdown files."""
 
 import locale
+from dataclasses import dataclass
+from difflib import SequenceMatcher
 from pathlib import Path
 from datetime import datetime, timedelta
 from typing import Optional
+
+
+@dataclass
+class SearchResult:
+    """A search result from fuzzy note search."""
+    date: datetime
+    filename: str
+    line_number: int
+    line_content: str
+    score: float
 
 # Set Norwegian locale for date formatting
 try:
@@ -132,3 +144,58 @@ class NoteManager:
             True if note file exists, False otherwise
         """
         return self.get_note_path(date).exists()
+
+    def search_notes(self, query: str, min_score: float = 0.4) -> list[SearchResult]:
+        """Search all notes for fuzzy matches.
+
+        Args:
+            query: The search query
+            min_score: Minimum similarity score (0-1) to include in results
+
+        Returns:
+            List of SearchResult objects sorted by score (highest first)
+        """
+        if not query or not query.strip():
+            return []
+
+        query_lower = query.lower().strip()
+        results: list[SearchResult] = []
+
+        for note_file in self.notes_dir.glob("*.md"):
+            try:
+                # Parse date from filename (format: DD-Mmm-YYYY.md)
+                date = datetime.strptime(note_file.stem, "%d-%b-%Y")
+            except ValueError:
+                continue
+
+            try:
+                content = note_file.read_text()
+            except (OSError, IOError):
+                continue
+
+            for line_num, line in enumerate(content.split('\n'), start=1):
+                line_stripped = line.strip()
+                if not line_stripped:
+                    continue
+
+                line_lower = line_stripped.lower()
+
+                # Check for exact substring match first (highest score)
+                if query_lower in line_lower:
+                    score = 1.0
+                else:
+                    # Use fuzzy matching
+                    score = SequenceMatcher(None, query_lower, line_lower).ratio()
+
+                if score >= min_score:
+                    results.append(SearchResult(
+                        date=date,
+                        filename=note_file.stem,
+                        line_number=line_num,
+                        line_content=line_stripped,
+                        score=score
+                    ))
+
+        # Sort by score (highest first), then by date (newest first)
+        results.sort(key=lambda r: (-r.score, -r.date.timestamp()))
+        return results

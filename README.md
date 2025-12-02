@@ -10,6 +10,7 @@ NoteTUI is a terminal-based note-taking application that lets you write daily no
 
 - **Daily notes** - Automatic filename based on date (`DD-Mmm-YYYY.md`)
 - **Markdown editor** - Syntax highlighting and line numbering
+- **Fuzzy search** - Search across all notes with `Ctrl+F`
 - **Calendar view** - Visual navigation between dates
 - **Todo list** - Collects all `##` headings from your notes
 - **Keyboard-driven** - Fast navigation without mouse
@@ -80,17 +81,18 @@ Then open http://localhost:8000 in your browser.
 |-----|--------|
 | `Ctrl+N` | Next day |
 | `Ctrl+P` | Previous day |
-| `Ctrl+F` | Next week |
-| `Ctrl+B` | Previous week |
+| `Ctrl+]` | Next week |
+| `Ctrl+[` | Previous week |
 | `Ctrl+T` | Go to today |
 
-### Views
+### Search & Views
 
 | Key | Action |
 |-----|--------|
+| `Ctrl+F` | Search all notes |
 | `Ctrl+C` | Show/hide calendar |
 | `Tab` | Focus todo list |
-| `Escape` | Back to editor |
+| `Escape` | Close search/calendar |
 
 ### Editing
 
@@ -113,7 +115,7 @@ Then open http://localhost:8000 in your browser.
 |-----|--------|
 | Arrow keys | Navigate between days |
 | `Enter` | Select date |
-| `[` / `]` | Previous/next month |
+| `{` / `}` | Previous/next month |
 
 ## Todo Feature
 
@@ -131,6 +133,16 @@ Get milk and bread
 - Press `Tab` to focus the todo list
 - Press `Enter` to jump to the date for a todo
 - Press `Ctrl+D` to mark a todo as done (adds ~~strikethrough~~)
+
+## Search Feature
+
+Press `Ctrl+F` to open the fuzzy search modal:
+
+- Search across all your notes (content and headings)
+- Results update as you type
+- Use arrow keys to navigate results
+- Press `Enter` to jump to the selected result
+- Press `Escape` to close the search
 
 ## Technology
 

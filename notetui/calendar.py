@@ -238,12 +238,12 @@ class Calendar(Container):
                 self.selected_date = selected
                 self.post_message(self.DateSelected(selected))
 
-    def _key_right_square_bracket(self) -> None:
-        """Move to next month with ]."""
+    def _key_right_curly_bracket(self) -> None:
+        """Move to next month with }."""
         self.next_month()
 
-    def _key_left_square_bracket(self) -> None:
-        """Move to previous month with [."""
+    def _key_left_curly_bracket(self) -> None:
+        """Move to previous month with {."""
         self.previous_month()
 
     def next_month(self) -> None:

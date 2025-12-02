@@ -12,6 +12,7 @@ from textual.reactive import reactive
 from notetui.notes import NoteManager
 from notetui.calendar import Calendar
 from notetui.todolist import TodoList, TodoItem
+from notetui.search import SearchModalScreen
 
 
 class NoteTUI(App):
@@ -178,8 +179,9 @@ class NoteTUI(App):
         Binding("ctrl+s", "save", "Save", priority=True),
         Binding("ctrl+n", "next_day", "Next Day", priority=True),
         Binding("ctrl+p", "prev_day", "Prev Day", priority=True),
-        Binding("ctrl+f", "next_week", "Next Week", priority=True),
-        Binding("ctrl+b", "prev_week", "Prev Week", priority=True),
+        Binding("ctrl+f", "toggle_search", "Search", priority=True),
+        Binding("ctrl+]", "next_week", "Next Week", priority=True),
+        Binding("ctrl+[", "prev_week", "Prev Week", priority=True),
         Binding("ctrl+t", "today", "Today", priority=True),
         Binding("ctrl+c", "toggle_calendar", "Calendar", priority=True),
         Binding("ctrl+h", "show_help", "Help", priority=True),
@@ -370,6 +372,19 @@ class NoteTUI(App):
         """Toggle calendar view."""
         self.show_calendar = not self.show_calendar
 
+    def action_toggle_search(self) -> None:
+        """Open search modal."""
+        def handle_search_result(result: tuple[datetime, int] | None) -> None:
+            if result:
+                date, line_number = result
+                self.current_date = date
+                if self.editor:
+                    self.editor.move_cursor((line_number - 1, 0))
+                    self.editor.focus()
+                self.notify(f"Jumped to: {date.strftime('%d %b %Y')}")
+
+        self.push_screen(SearchModalScreen(self.note_manager), handle_search_result)
+
     def action_escape(self) -> None:
         """Handle escape key."""
         if self.show_calendar:
@@ -446,16 +461,17 @@ class NoteTUI(App):
 ## Navigation
 - **Ctrl+N**: Next day
 - **Ctrl+P**: Previous day
-- **Ctrl+F**: Next week (Forward)
-- **Ctrl+B**: Previous week (Back)
+- **Ctrl+]**: Next week
+- **Ctrl+[**: Previous week
 - **Ctrl+T**: Go to today
+
+## Search & Views
+- **Ctrl+F**: Search notes
+- **Ctrl+C**: Toggle calendar view
+- **Escape**: Close search/calendar
 
 ## Editing
 - **Ctrl+S**: Save current note
-
-## Views
-- **Ctrl+C**: Toggle calendar view
-- **Escape**: Close calendar (when open)
 
 ## Other
 - **Ctrl+H**: Show this help
@@ -464,7 +480,7 @@ class NoteTUI(App):
 ## In Calendar View
 - **Arrow Keys**: Navigate between days
 - **Enter**: Select focused date
-- **[** / **]**: Previous/Next month
+- **{** / **}**: Previous/Next month
 - Click to select a date
 
 ---
@@ -504,7 +520,6 @@ Format: DD-MMM-YYYY.md (e.g., 21-Nov-2025.md)
             self.editor.text = self.note_manager.get_note_content(self.current_date)
             # Restore cursor position
             self.editor.move_cursor(cursor_pos)
-
 
 def main():
     """Entry point for the application."""
