@@ -90,7 +90,7 @@ Then open http://localhost:8000 in your browser.
 | Key | Action |
 |-----|--------|
 | `Ctrl+F` | Search all notes |
-| `Ctrl+C` | Show/hide calendar |
+| `Ctrl+K` | Show/hide calendar |
 | `Tab` | Focus todo list |
 | `Escape` | Close search/calendar |
 
@@ -99,6 +99,8 @@ Then open http://localhost:8000 in your browser.
 | Key | Action |
 |-----|--------|
 | `Ctrl+S` | Save note |
+| `Ctrl+C` | Copy selected text |
+| `Ctrl+V` | Paste from clipboard |
 | `Ctrl+D` | Mark todo as done (in todo list) |
 | `Ctrl+Enter` | Mark todo on line as done (in editor) |
 

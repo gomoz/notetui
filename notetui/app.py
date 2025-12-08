@@ -3,6 +3,8 @@
 from datetime import datetime
 from pathlib import Path
 
+import pyperclip
+
 from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.containers import Container, Horizontal, Vertical
@@ -183,7 +185,9 @@ class NoteTUI(App):
         Binding("ctrl+]", "next_week", "Next Week", priority=True),
         Binding("ctrl+[", "prev_week", "Prev Week", priority=True),
         Binding("ctrl+t", "today", "Today", priority=True),
-        Binding("ctrl+c", "toggle_calendar", "Calendar", priority=True),
+        Binding("ctrl+k", "toggle_calendar", "Calendar", priority=True),
+        Binding("ctrl+c", "copy_selection", "Copy", priority=True),
+        Binding("ctrl+v", "paste", "Paste", priority=True),
         Binding("ctrl+h", "show_help", "Help", priority=True),
         Binding("ctrl+enter", "finish_todo_on_line", "Finish Todo", show=False),
         Binding("tab", "focus_todos", "Focus Todos", show=False),
@@ -372,6 +376,26 @@ class NoteTUI(App):
         """Toggle calendar view."""
         self.show_calendar = not self.show_calendar
 
+    def action_copy_selection(self) -> None:
+        """Copy selected text to clipboard."""
+        if self.editor and self.editor.selected_text:
+            pyperclip.copy(self.editor.selected_text)
+            self.notify("Copied to clipboard")
+        else:
+            self.notify("No text selected", severity="warning")
+
+    def action_paste(self) -> None:
+        """Paste text from clipboard."""
+        if self.editor:
+            try:
+                text = pyperclip.paste()
+                if text:
+                    self.editor.insert(text)
+                else:
+                    self.notify("Clipboard is empty", severity="warning")
+            except Exception:
+                self.notify("Could not access clipboard", severity="error")
+
     def action_toggle_search(self) -> None:
         """Open search modal."""
         def handle_search_result(result: tuple[datetime, int] | None) -> None:
@@ -467,11 +491,13 @@ class NoteTUI(App):
 
 ## Search & Views
 - **Ctrl+F**: Search notes
-- **Ctrl+C**: Toggle calendar view
+- **Ctrl+K**: Toggle calendar view
 - **Escape**: Close search/calendar
 
 ## Editing
 - **Ctrl+S**: Save current note
+- **Ctrl+C**: Copy selected text
+- **Ctrl+V**: Paste from clipboard
 
 ## Other
 - **Ctrl+H**: Show this help
