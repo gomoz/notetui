@@ -228,8 +228,12 @@ class NoteTUI(App):
                         show_line_numbers=True,
                     )
                     with Horizontal(id="button-bar"):
-                        yield Button("💾 Save", id="save-button", classes="action-button")
-                        yield Button("🔄 Refresh", id="refresh-button", classes="action-button")
+                        save_btn = Button("💾 Save", id="save-button", classes="action-button")
+                        save_btn.can_focus = False
+                        yield save_btn
+                        refresh_btn = Button("🔄 Refresh", id="refresh-button", classes="action-button")
+                        refresh_btn.can_focus = False
+                        yield refresh_btn
 
                 with Container(id="todo-container"):
                     yield TodoList(self.note_manager.notes_dir)
